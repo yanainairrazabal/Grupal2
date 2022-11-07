@@ -7081,38 +7081,3 @@
   return index_umd;
 
 }));
-//# sourceMappingURL=bootstrap.bundle.js.map
-function listar() {
-  const URL = 'https://6363e9fb8a3337d9a2ec4742.mockapi.io/users';
-
-  fetch(URL)
-    .then((resp) => resp.json())
-    .then((data) => {
-      let usuarios = data;
-      let datos = "";
-      for (let i = 0; i < usuarios.length; i++) {
-        datos += `<li>${usuarios[i].id}${usuarios[i].name} </li>`
-
-      }
-      document.getElementById("results").innerHTML = datos
-
-
-    })
-}
-
-function agregar() {
-  let nombre = document.getElementById("inputPostNombre").value;
-  let apellido = document.getElementById("inputPostApellido").value;
-
-  console.log(nombre, apellido)
-  fetch('https://6363e9fb8a3337d9a2ec4742.mockapi.io/users/', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json; charset=utf=8'
-    },
-    body: JSON.stringify({ "name": nombre, "lastname": apellido })
-  })
-    .then(response => response.json())
-    .then(response => console.log(JSON.stringify(response)))
-    listar()
-}

@@ -2,6 +2,7 @@ const mockApi = "https://637160d507858778617bac42.mockapi.io/api/v1/users";
 const results = document.getElementById("results");
 var myModal = new bootstrap.Modal(document.getElementById('dataModal'), []);
 
+
 document.addEventListener("DOMContentLoaded", () => {
   listar();
   document.querySelectorAll(".btn-disable").forEach(element => {
@@ -53,13 +54,14 @@ function cargarModificar(){
         if (response.ok) {
             return response.json();
         }
-        results.innerHTML = "El usuario no existe o ha ocurrido un error";
+        showAlert();
     }).then(data => {
        
         document.getElementById("inputPutNombre").value = data.nombre;
         document.getElementById("inputPutApellido").value = data.apellido;
         myModal.show();
     }).catch((error) => {
+        showAlert();
         console.log(error);
     });
 }
@@ -76,7 +78,7 @@ function listar() {
         if (response.ok) {
             return response.json();
         } 
-        results.innerHTML = "El usuario no existe o ha ocurrido un error";
+        showAlert();
     }).then(data => {
         if(Array.isArray(data)) {
             data.forEach(element => {
@@ -86,6 +88,7 @@ function listar() {
             results.innerHTML = ` { "id": ${data.id},  "nombre": ${data.nombre}, "apellido": ${data.apellido} } <br>`;
         }
     }).catch((error) => {
+        showAlert();
         console.log(error);
     });
 }
@@ -108,8 +111,11 @@ function agregar() {
             listar();
             return;
         }
-        results.innerHTML = "Ha ocurrido un error";
-    }).catch((error) =>{console.log(error)});
+        showAlert();
+    }).catch((error) =>{
+        showAlert();
+        console.log(error);
+    });
 }
 
 function modificar() {
@@ -132,8 +138,9 @@ function modificar() {
             listar();
             return;
         }
-        results.innerHTML = "Ha ocurrido un error";
+        showAlert();
     }).catch((error) => {
+        showAlert();
         console.log(error);
     });
 }
@@ -144,12 +151,19 @@ function eliminar() {
     then(response => {
         if(response.ok) {
             listar();
-        }else if(response.status == 404){
-            results.innerHTML = "Usuario no existe";
-        }else{
-            results.innerHTML = "Ocurrio un error!!";
+        }else {
+            showAlert();
         }
     }).catch((error) => {
+        showAlert();
         console.log(error);
     });
+    
+}
+
+function showAlert(){
+    document.getElementById('alert-message').style.display="block";
+    setTimeout(() => {
+        document.getElementById('alert-message').style.display="none";
+      }, 3000)
 }
